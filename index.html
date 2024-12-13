@@ -14,22 +14,22 @@
 
 <body>
   <audio id="audio" src="###"></audio>
-  <div class="d-flex align-items-center " style="height: 100vh">
+  <div class="d-flex align-items-center" style="height: 90vh">
     <div id="controlPanel" class="container text-center mx-auto">
-      <div class="col-5 mx-auto mb-4">
+      <div class="col-6 mx-auto mb-4">
         <img id="cover" class="col-12" src="" alt="">
       </div>
-      <div class="select-wrapper mb-3">
+      <div class="select-wrapper d-flex justify-content-center align-items-center mb-3">
         <select id="selectElement" class="h1 text-center">
         </select>
-        <div class="arrow">
+        <!-- <div class="arrow">
           <i class="fa-solid fa-caret-up fa-rotate-180 fa-2x" aria-hidden="true"></i>
-        </div>
+        </div> -->
       </div>
 
       <!-- ======================================== -->
-      <div id="sinGer" class="d-flex justify-content-center align-items-center col-5 mx-auto mb-4 h3"></div>
-      <div class="d-flex justify-content-center align-items-center col-5 mx-auto mb-2">
+      <div id="sinGer" class="d-flex justify-content-center align-items-center col-6 mx-auto mb-4 h4"></div>
+      <div class="d-flex justify-content-center align-items-center col-6 mx-auto mb-2">
         <div id="showNowTime" class="text-start" style="flex: 1;">
           00:00
         </div>
@@ -38,13 +38,13 @@
           00:00
         </div>
       </div>
-      <div class="d-flex justify-content-between align-items-center col-5 mx-auto mb-3 showDet">
+      <div class="d-flex justify-content-between align-items-center col-6 mx-auto mb-3 showDet">
         <div class="col-3 text-start text-nowrap" id="showDetailText">歡迎使用我的播放器</div>
         <div class="col-3 text-end" id="showStatus">依序播放</div>
       </div>
 
       <!-- 功能按鈕 一區-->
-      <div class="row col-5 mx-auto">
+      <div class="row col-6 mx-auto">
         <div class="col d-flex justify-content-start">
           <button id="list" class="fa-solid fa-list fa-2x nbtn"></button>
           <!-- list 點選彈出視窗 -->
@@ -72,7 +72,7 @@
 
           <!-- tool 點選彈出視窗 -->
           <div id="overlayTool" class="overlay">
-            <div id="popupTool" class="popup px-4 py-4">
+            <div id="popupTool" class="popup p-4">
               <h2 class="mb-1">設定閒置</h2>
               <p class="mb-4">請輸入計時間秒數</p>
               <input class="" type="number" value="" id="setTool" placeholder="30">
@@ -86,7 +86,7 @@
 
 
       <!-- 功能按鈕 二區-->
-      <div class="row  col-5 mx-auto align-items-center .ch-box">
+      <div class="row  col-6 mx-auto align-items-center .ch-box">
         <div class="col d-flex ch ch-0">
           <button id="setMute" class="fa-solid fa-volume-up fa-2x mbtn"></button>
 
@@ -120,18 +120,19 @@
         <div class="col d-flex justify-content-end ch">
           <button id="nextSong" class="fa-solid fa-forward-step fa-2x mbtn"></button>
         </div>
-        <div class="col d-flex justify-content-end no">
+        <div class="col d-flex justify-content-end ch-no">
           <button id="replayBtn" class="fa-solid fa-stop fa-2x mbtn"></button>
         </div>
       </div>
 
       <!-- 彈跳視窗 ==> 滑鼠未移動過久 -->
       <div id="overlay" class="overlay">
-        <div id="popup" class="popup">
-          <h2>閒置過久</h2>
-          <p>請問要繼續播放嗎?</p>
-          <button id="closePop">暫停</button>
-          <button id="closePopPly">播放</button>
+        <div id="popup" class="popup p-4">
+          <h2 class="mb-1">閒置過久</h2>
+          <p class="mb-1">請問要繼續播放嗎?</p>
+          <p class="mb-4">如需自定秒數請至「設定」</p>
+          <button class="px-2 py-1" id="closePop">暫停</button>
+          <button class="px-2 py-1" id="closePopPly">播放</button>
         </div>
       </div>
 

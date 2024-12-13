@@ -42,6 +42,15 @@ document.addEventListener("DOMContentLoaded", () => {
     const sinGer = document.querySelector("#sinGer");
     const favicon = document.querySelector("#favicon");
     const cover = document.querySelector("#cover");
+    const addPopList = document.querySelector("#addPopList");
+    const popupWindow = document.querySelector("#popupWindow");
+    const overlayTool = document.querySelector("#overlayTool");
+    const setTool = document.querySelector("#setTool");
+    const closePopTool = document.querySelector("#closePopTool");
+    const closePopSet = document.querySelector("#closePopSet");
+    const popupTool = document.querySelector("#popupTool");
+    const closePop = document.querySelector("#closePop");
+    const closePopPly = document.querySelector("#closePopPly");
 
     // 初始值
     let selectedId = 0;
@@ -179,8 +188,7 @@ document.addEventListener("DOMContentLoaded", () => {
       showDetailText.innerText = "已暫停";
       audio.pause();
       updatePlayStatus();
-      // 清除滑鼠移動計時器
-      // clearTimeout(timeoutId);
+      stopTracking();
     }
 
     // (方法) 播放 更換圖示
@@ -196,7 +204,6 @@ document.addEventListener("DOMContentLoaded", () => {
       audio.addEventListener("timeupdate", getMusicTime);
       audio.play();
       updatePlayStatus();
-      // timeoutId = setTimeout(onTimeDo, time);
     }
 
     // <功能> 播放暫停
@@ -501,34 +508,7 @@ document.addEventListener("DOMContentLoaded", () => {
       sinGer.innerHTML = singer;
     }
 
-    //=====================================================================
-
-    // let timeoutId;
-    let time = 30000;
-    // function onTimeDo() {
-    //   console.log("滑鼠未移動超過X分鐘，執行動作");
-    //   showPopup();
-    //   stop();
-    // }
-    // // 添加滑鼠移動事件監聽器
-    // window.addEventListener("mousemove", (event) => {
-    //   if (wasPlaying == true) {
-    //     clearTimeout(timeoutId);
-    //     timeoutId = setTimeout(onTimeDo, time);
-    //   }
-    // });
-
-    // 顯示彈跳視窗
-    function showPopup() {
-      document.getElementById("overlay").style.display = "flex";
-    }
-    // 關閉彈跳視窗
-    function closePopup() {
-      document.getElementById("overlay").style.display = "none";
-    }
-
-    // ======================================================
-
+    // 清單選擇區 =============
     function showPopupList() {
       overlayList.style.display = "flex";
     }
@@ -536,7 +516,9 @@ document.addEventListener("DOMContentLoaded", () => {
       overlayList.style.display = "none";
     }
     closePopList.addEventListener("click", closePopupList);
-
+    addPopList.addEventListener("click", () => {
+      alert("您尚未成為訂閱會員，請付費以解鎖更多功能！");
+    });
     ListUp();
     function ListUp() {
       const listContainer = document.querySelector("#popupListUp");
@@ -620,7 +602,7 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }
 
-    const popupWindow = document.getElementById("popupWindow");
+    // 聲音功能彈出視窗 ==================
     setMute.addEventListener("mouseenter", () => {
       const rect = setMute.getBoundingClientRect();
       popupWindow.style.top = `${rect.top - popupWindow.offsetHeight}px`;
@@ -650,12 +632,7 @@ document.addEventListener("DOMContentLoaded", () => {
       popupWindow.classList.add("hidden");
     });
 
-    const overlayTool = document.getElementById("overlayTool");
-    const setTool = document.getElementById("setTool");
-    const closePopTool = document.getElementById("closePopTool");
-    const closePopSet = document.getElementById("closePopSet");
-    const popupTool = document.getElementById("popupTool");
-
+    // 工具設定區
     function showPopupTool() {
       overlayTool.style.display = "flex";
       closePopSet.addEventListener("click", function () {
@@ -671,6 +648,57 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("overlayTool").style.display = "none";
     }
     closePopTool.addEventListener("click", closePopToolF);
+
+    //==========================================
+
+    let timeout;
+    let time = 5000;
+    let initialPosition = { x: 0, y: 0 };
+    let isTracking = false;
+    function onTimeDo() {
+      console.log("");
+      showPopup();
+      stop();
+    }
+    closePop.addEventListener("click", closePopup);
+    closePopPly.addEventListener("click", () => {
+      isTrackingFun(), closePopup();
+      play();
+    });
+
+    playStopBtn.addEventListener("click", isTrackingFun);
+    window.addEventListener("mousemove", (event) => {
+      if (isTracking) {
+        if (
+          initialPosition.x !== event.clientX ||
+          initialPosition.y !== event.clientY
+        ) {
+          initialPosition = { x: event.clientX, y: event.clientY };
+          clearTimeout(timeout);
+          timeout = setTimeout(onTimeDo, time);
+        }
+      }
+    });
+    function isTrackingFun() {
+      if (!isTracking) {
+        isTracking = true;
+        initialPosition = { x: event.clientX, y: event.clientY };
+        timeout = setTimeout(onTimeDo, time);
+      }
+    }
+    function stopTracking() {
+      clearTimeout(timeout);
+      isTracking = false;
+    }
+
+    // 顯示彈跳視窗
+    function showPopup() {
+      document.getElementById("overlay").style.display = "flex";
+    }
+    // 關閉彈跳視窗
+    function closePopup() {
+      document.getElementById("overlay").style.display = "none";
+    }
   }
 });
 
@@ -685,8 +713,8 @@ document.addEventListener("DOMContentLoaded", () => {
 //隨機循環 => select singer not update 已處理
 
 //待處理
-//條整視窗大小無法更新select寬度 ==> 留到RWD
+//條整視窗大小無法更新select寬度 ==> 留到RWD ==> 處理
 //select彈出視窗
-//settimeout for long time
+//settimeout for long time ==> 已處理
 //playstopbtn hover
 //docs
