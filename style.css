@@ -298,7 +298,7 @@ body {
  .no, .no > * {
     display: none !important;
   }
-  .col-6 {
+  .col-5 {
     flex: 0 0 auto;
     width: 66.66666667%;
     max-width: 66.66666667%;
@@ -327,7 +327,7 @@ body {
   .ch-f{
     flex: 0;
   }
-  .col-6 {
+  .col-5 {
     flex: 0 0 auto;
     width: 83.33333333%; 
     max-width: 83.33333333%;
