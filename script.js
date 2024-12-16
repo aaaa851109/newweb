@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // 加載
   let musicList = [];
   let newMusicList = [];
 
@@ -15,7 +14,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
   function updateDOM(musicList) {
-    // 讓全域吃到 musicList
     const audio = document.querySelector("#audio");
     const selectElement = document.querySelector("#selectElement");
     const playStopBtn = document.querySelector("#playStopBtn");
@@ -52,7 +50,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const closePop = document.querySelector("#closePop");
     const closePopPly = document.querySelector("#closePopPly");
 
-    // 初始值
     let selectedId = 0;
     audio.src = musicList[selectedId].src;
     let singer = "";
@@ -65,20 +62,18 @@ document.addEventListener("DOMContentLoaded", () => {
     let ranIndex = 0;
     let iconIndex = 0;
 
-    // 生成選單
     musicListFun();
     function musicListFun() {
       selectElement.innerHTML = "";
       musicList.forEach((song, index) => {
         const option = document.createElement("option");
         option.value = index;
-        selectElement.value = option.value; // selectElement.value
+        selectElement.value = option.value;
         option.textContent = song.title;
         selectElement.appendChild(option);
       });
     }
 
-    // (方法) 顯示歌手名稱 暫存歌曲來源 更新title,Thumbnail
     getSinger();
     function getSinger() {
       singer = musicList[selectElement.value].singer;
@@ -89,14 +84,12 @@ document.addEventListener("DOMContentLoaded", () => {
       cover.src = `${musicList[selectElement.value].Thumbnail}`;
     }
 
-    // (方法) 確認播放狀態
     function checkPlay() {
       if (wasPlaying) {
         play();
       }
     }
 
-    // <功能> 切換選單
     selectElement.addEventListener("change", function (event) {
       selectedId = parseInt(event.target.value);
       audio.src = musicList[selectedId].src;
@@ -104,7 +97,6 @@ document.addEventListener("DOMContentLoaded", () => {
       getSinger();
     });
 
-    // (方法) 設定聲音條 樣式 控制audio音量
     setVolumeFun();
     function setVolumeFun() {
       const min = setVolume.min;
@@ -117,7 +109,6 @@ document.addEventListener("DOMContentLoaded", () => {
       mute();
     }
 
-    // (方法) 切換靜音圖示
     function mute() {
       if (audio.muted || audio.volume == 0) {
         setMute.setAttribute("class", "fa-solid fa-volume-xmark fa-2x mbtn");
@@ -126,12 +117,12 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
 
-    // <功能> 切換靜音 切換大小音量
     setMute.addEventListener("click", function () {
       wasMute = audio.muted;
       audio.muted = !audio.muted;
       mute();
     });
+
     setVolume.addEventListener("input", setVolumeFun);
     function setVolumeClick(n) {
       setVolume.value = Math.min(
@@ -140,14 +131,15 @@ document.addEventListener("DOMContentLoaded", () => {
       );
       setVolumeFun();
     }
+
     clickVolumeUp.addEventListener("click", function () {
       setVolumeClick(5);
     });
+
     clickVolumeDown.addEventListener("click", function () {
       setVolumeClick(-5);
     });
 
-    // (方法) 設定進度條 樣式
     function getMusicTime() {
       showNowTime.innerText = getTimeFormat(audio.currentTime);
       showSongTime.innerText = getTimeFormat(audio.duration);
@@ -155,6 +147,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const percentage = (audio.currentTime / audio.duration) * 100;
       progressBar.style.background = `linear-gradient(to right, #5fc3b4 ${percentage}%, #8F8F8F ${percentage}%)`;
     }
+
     function getTimeFormat(t) {
       let m = parseInt(t / 60);
       let s = parseInt(t % 60);
@@ -162,6 +155,7 @@ document.addEventListener("DOMContentLoaded", () => {
       s = s < 10 ? "0" + s : s;
       return m + ":" + s;
     }
+
     function setProgress() {
       const min = progressBar.min;
       const max = progressBar.max;
@@ -170,30 +164,27 @@ document.addEventListener("DOMContentLoaded", () => {
       progressBar.style.background = `linear-gradient(to right, #5fc3b4  ${percentage}%, #8F8F8F ${percentage}%)`;
       audio.currentTime = progressBar.value;
     }
+
     audio.addEventListener("loadedmetadata", function () {
       progressBar.max = audio.duration;
     });
 
-    // <功能> 切換進度
     progressBar.addEventListener("input", setProgress);
 
-    // (方法) 更新歌曲狀態
     function updatePlayStatus() {
       wasPlaying = !audio.paused;
     }
 
-    // (方法) 暫停 更換圖示
     function stop() {
-      playStopBtn.src = "play_top_icon/play.svg";
+      playStopBtn.src = "icon_img/icon_play.svg";
       showDetailText.innerText = "已暫停";
       audio.pause();
       updatePlayStatus();
       stopTracking();
     }
 
-    // (方法) 播放 更換圖示
     function play() {
-      playStopBtn.src = "play_top_icon/pause.svg";
+      playStopBtn.src = "icon_img/icon_pause.svg";
       if (currentMode === "randomSong") {
         singer = musicList[selectElement.value].singer;
         sinGer.innerHTML = musicList[indices[ranIndex]].singer;
@@ -207,7 +198,6 @@ document.addEventListener("DOMContentLoaded", () => {
       isTrackingFun();
     }
 
-    // <功能> 播放暫停
     playStopBtn.addEventListener("click", function () {
       if (audio.paused) {
         play();
@@ -216,17 +206,15 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 
-    // <功能> 重播
     replayBtn.addEventListener("click", function () {
       stop();
       audio.currentTime = 0;
     });
 
-    // (方法) 更換秒數
     function changeTime(s) {
       audio.currentTime += s;
     }
-    // <功能> 更換秒數
+
     prevTime.addEventListener("click", function () {
       changeTime(-10);
     });
@@ -234,7 +222,6 @@ document.addEventListener("DOMContentLoaded", () => {
       changeTime(10);
     });
 
-    // <功能> 前後首
     prevSong.addEventListener("click", function () {
       if (currentMode == "randomSong") {
         if (doubleMode == "randomSongAndRePeat" && ranIndex <= 0) {
@@ -327,7 +314,7 @@ document.addEventListener("DOMContentLoaded", () => {
     function repeatSong() {
       currentMode = "repeatSong";
       temp = audio.src;
-      console.log(temp);
+      // console.log(temp);
       showStatus.innerHTML = "單曲重複";
     }
 
@@ -355,7 +342,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     carouselButton.addEventListener("click", () => {
       iconIndex = (iconIndex + 1) % iconFun.length;
-      console.log(iconIndex);
+      // console.log(iconIndex);
       iconFun[iconIndex].action();
       updateButton();
     });
@@ -375,7 +362,7 @@ document.addEventListener("DOMContentLoaded", () => {
       },
       repeatList: () => {
         repeatMode = !repeatMode;
-        console.log(repeatMode);
+        // console.log(repeatMode);
         if (currentMode == "orderSong") {
           doubleMode = "orderSongAndRePeat";
           showStatus.innerHTML = "依序循環播放";
@@ -397,7 +384,7 @@ document.addEventListener("DOMContentLoaded", () => {
         } else {
           repeatList.setAttribute("class", "fa-solid fa-retweet fa-2x nbtn");
         }
-        console.log(repeatList);
+        // console.log(repeatList);
       },
       tool: () => {
         showPopupTool();
@@ -434,15 +421,13 @@ document.addEventListener("DOMContentLoaded", () => {
           audio.src = musicList[indices[ranIndex]].src;
           selectElement.value = indices[ranIndex];
           document.title = `playWeb ${musicList[selectElement.value].title}`;
-
           play();
         } else {
           ranIndex += 1;
-          console.log(indices[ranIndex]);
+          // console.log(indices[ranIndex]);
           audio.src = musicList[indices[ranIndex]].src;
           selectElement.value = indices[ranIndex];
           document.title = `playWeb ${musicList[selectElement.value].title}`;
-
           play();
         }
       } else if (doubleMode == "orderSongAndRePeat") {
@@ -450,33 +435,31 @@ document.addEventListener("DOMContentLoaded", () => {
           selectedId = 0;
           audio.src = musicList[selectedId].src;
           selectElement.value = selectedId;
-
           play();
         } else {
           defSong();
         }
-      } else if (currentMode === "randomSong") {
+      } else if (currentMode == "randomSong") {
         if (ranIndex < indices.length) {
           if (ranIndex + 1 == indices.length) {
             stop();
             audio.currentTime = 0;
           } else {
             ranIndex += 1;
-            console.log(indices[ranIndex]);
+            // console.log(indices[ranIndex]);
             audio.src = musicList[indices[ranIndex]].src;
             selectElement.value = indices[ranIndex];
             document.title = `playWeb ${musicList[selectElement.value].title}`;
-
             play();
           }
         }
-      } else if (currentMode === "orderSong") {
+      } else if (currentMode == "orderSong") {
         defSong();
       }
     });
 
     function defSong() {
-      if (musicList[selectedId] == musicList.length - 1) {
+      if (selectedId == musicList.length - 1) {
         stop();
         audio.currentTime = 0;
       } else {
@@ -494,14 +477,12 @@ document.addEventListener("DOMContentLoaded", () => {
         const j = Math.floor(Math.random() * (i + 1));
         [indices[i], indices[j]] = [indices[j], indices[i]];
       }
-      console.log("原始陣列:", musicList);
-      console.log("隨機索引:", indices);
-      console.log("顯示索引:", indices[ranIndex] + typeof indices[ranIndex]);
       if (wasPlaying == true) {
       } else {
         end();
       }
     }
+
     function end() {
       audio.src = musicList[indices[ranIndex]].src;
       selectElement.value = indices[ranIndex];
@@ -509,17 +490,20 @@ document.addEventListener("DOMContentLoaded", () => {
       sinGer.innerHTML = singer;
     }
 
-    // 清單選擇區 =============
     function showPopupList() {
       overlayList.style.display = "flex";
     }
+
     function closePopupList() {
       overlayList.style.display = "none";
     }
+
     closePopList.addEventListener("click", closePopupList);
+
     addPopList.addEventListener("click", () => {
       alert("您尚未成為訂閱會員，請付費以解鎖更多功能！");
     });
+
     ListUp();
     function ListUp() {
       const listContainer = document.querySelector("#popupListUp");
@@ -548,6 +532,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
       });
     }
+
     ListDown();
     function ListDown() {
       const listContainer = document.querySelector("#popupListDown");
@@ -567,7 +552,6 @@ document.addEventListener("DOMContentLoaded", () => {
         box.appendChild(contentSong);
         box.appendChild(xmark);
         listContainer.appendChild(box);
-
         xmark.addEventListener("click", () => {
           event.stopPropagation();
           musicList.push(newMusicList[i]);
@@ -584,6 +568,7 @@ document.addEventListener("DOMContentLoaded", () => {
       musicListFun();
       getSinger();
     }
+
     boxesFun();
     function boxesFun() {
       const boxes = document.querySelectorAll(".box");
@@ -603,7 +588,6 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }
 
-    // 聲音功能彈出視窗 ==================
     setMute.addEventListener("mouseenter", () => {
       const rect = setMute.getBoundingClientRect();
       popupWindow.style.top = `${rect.top - popupWindow.offsetHeight}px`;
@@ -633,7 +617,6 @@ document.addEventListener("DOMContentLoaded", () => {
       popupWindow.classList.add("hidden");
     });
 
-    // 工具設定區
     function showPopupTool() {
       overlayTool.style.display = "flex";
       closePopSet.addEventListener("click", function () {
@@ -645,12 +628,12 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       });
     }
+
     function closePopToolF() {
       document.getElementById("overlayTool").style.display = "none";
     }
-    closePopTool.addEventListener("click", closePopToolF);
 
-    //==========================================
+    closePopTool.addEventListener("click", closePopToolF);
 
     let timeout;
     let time = 5000;
@@ -660,6 +643,7 @@ document.addEventListener("DOMContentLoaded", () => {
       showPopup();
       stop();
     }
+
     function isTrackingFun() {
       if (!isTracking) {
         isTracking = true;
@@ -693,16 +677,16 @@ document.addEventListener("DOMContentLoaded", () => {
     window.removeEventListener("mousemove", onMouseMoveHandler);
 
     closePop.addEventListener("click", closePopup);
+
     closePopPly.addEventListener("click", () => {
       closePopup();
       play();
     });
 
-    // 顯示彈跳視窗
     function showPopup() {
       document.getElementById("overlay").style.display = "flex";
     }
-    // 關閉彈跳視窗
+
     function closePopup() {
       document.getElementById("overlay").style.display = "none";
     }
