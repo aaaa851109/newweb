@@ -204,6 +204,7 @@ document.addEventListener("DOMContentLoaded", () => {
       audio.addEventListener("timeupdate", getMusicTime);
       audio.play();
       updatePlayStatus();
+      isTrackingFun();
     }
 
     // <功能> 播放暫停
@@ -659,14 +660,24 @@ document.addEventListener("DOMContentLoaded", () => {
       showPopup();
       stop();
     }
-    closePop.addEventListener("click", closePopup);
-    closePopPly.addEventListener("click", () => {
-      isTrackingFun(), closePopup();
-      play();
-    });
+    function isTrackingFun() {
+      if (!isTracking) {
+        isTracking = true;
+        initialPosition = { x: event.clientX, y: event.clientY };
+        timeout = setTimeout(onTimeDo, time);
+        window.addEventListener("mousemove", onMouseMoveHandler);
+        console.log("mousemove event listener added");
+      }
+    }
 
-    playStopBtn.addEventListener("click", isTrackingFun);
-    window.addEventListener("mousemove", (event) => {
+    function stopTracking() {
+      isTracking = false;
+      clearTimeout(timeout);
+      window.removeEventListener("mousemove", onMouseMoveHandler);
+      console.log("mousemove event listener removed");
+    }
+
+    function onMouseMoveHandler(event) {
       if (isTracking) {
         if (
           initialPosition.x !== event.clientX ||
@@ -677,18 +688,15 @@ document.addEventListener("DOMContentLoaded", () => {
           timeout = setTimeout(onTimeDo, time);
         }
       }
+    }
+
+    window.removeEventListener("mousemove", onMouseMoveHandler);
+
+    closePop.addEventListener("click", closePopup);
+    closePopPly.addEventListener("click", () => {
+      closePopup();
+      play();
     });
-    function isTrackingFun() {
-      if (!isTracking) {
-        isTracking = true;
-        initialPosition = { x: event.clientX, y: event.clientY };
-        timeout = setTimeout(onTimeDo, time);
-      }
-    }
-    function stopTracking() {
-      clearTimeout(timeout);
-      isTracking = false;
-    }
 
     // 顯示彈跳視窗
     function showPopup() {
