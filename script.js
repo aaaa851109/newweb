@@ -540,7 +540,7 @@ document.addEventListener("DOMContentLoaded", () => {
         listContainer.appendChild(box);
 
         xmark.addEventListener("click", () => {
-          event.stopPropagation(); // 阻止事件冒泡
+          event.stopPropagation();
           newMusicList.push(musicList[i]);
           musicList.splice(i, 1);
           updateUI();
@@ -568,7 +568,7 @@ document.addEventListener("DOMContentLoaded", () => {
         listContainer.appendChild(box);
 
         xmark.addEventListener("click", () => {
-          event.stopPropagation(); // 阻止事件冒泡
+          event.stopPropagation();
           musicList.push(newMusicList[i]);
           newMusicList.splice(i, 1);
           updateUI();
@@ -656,7 +656,6 @@ document.addEventListener("DOMContentLoaded", () => {
     let initialPosition = { x: 0, y: 0 };
     let isTracking = false;
     function onTimeDo() {
-      console.log("");
       showPopup();
       stop();
     }
